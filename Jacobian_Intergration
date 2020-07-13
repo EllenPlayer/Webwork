@@ -1,0 +1,106 @@
+##DESCRIPTION
+##  Jacobian: Intergaral
+## 	Field Theory notes pg 36
+##ENDDESCRIPTION
+
+##KEYWORDS('Jacobian', 'Intergration', 'Partial Differentiation','Determinant,'Multivariable')
+
+## DBsubject('Intergration')
+## DBchapter('Jacobians')
+## DBsection('Multivariable')
+## Date('09/07/2020')
+## Author('Ellen Player-ep1618@ic.ac.uk')
+## Institution('Imperial College London')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",
+  "MathObjects.pl",
+  "AnswerFormatHelp.pl",
+  "unionLists.pl",
+  "PGcourse.pl"
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+#############################################################
+
+
+
+#  Setup
+
+
+Context("Numeric")->variables->add(y=>"Real");
+Context()->flags->set(
+  reduceConstants=>0, # no decimals
+  reduceConstantFunctions=>1,
+  formatStudentAnswer=>'parsed', # no decimals
+);
+
+
+
+$a=non_zero_random(6,16,1);
+$b=$a/2;
+$g=non_zero_random(1,4,1);
+
+
+$f = Formula("x -y+$g");
+
+$vbound=$a/6;
+$ubound=$a/4;
+
+$intf=Formula("[2* $ubound**2 + $g* $ubound]*$vbound * 12");
+
+@answer=();
+$answer[0]=$intf;  
+
+
+##############################################################
+#
+#  Main Text
+#
+#
+
+Context()->texStrings;
+
+BEGIN_TEXT
+Evaluate the following intergral \(I= \iint_{R} $f dA\) where \(\textbf{R}\) is the region with vertices (0,0), ($a,0), ($b,$b) and ($b,-$b), using the tranformation \(x=2u+3v\) and \(y=2u-3v\) 
+$PAR
+\{ ans_rule(20) \}
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+foreach my $i (0#..2
+) {
+  ANS( $answer[$i]->cmp() );
+}
+
+#####################################
+#Solution
+
+Context()->texStrings;
+BEGIN_SOLUTION
+Sketch the region and the equations of the lines connecting the edges of the trapesodial region can be found.
+$PAR
+These are y=x, y=-x, y=-x+$a, y=x-$a.
+$PAR
+#Full solutions on actual document
+\(I= \iint_{R} $f dA=\) \{$answer[0]->correct_ans() \}
+END_SOLUTION
+Context()->normalStrings;
+
+;
+
+ENDDOCUMENT(); 
